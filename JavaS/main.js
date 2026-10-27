@@ -136,26 +136,37 @@ equal.addEventListener('click', () => {
     checknPown = 0;
 })
 
-function showResult(c, co, n = 1){
-    if(co === '-'){
-        return c-n;
-    }else if(co === '+'){
-        return c+n;
-    }else if(co === '*'){
-        return c*n;
-    }else if(co === '/'){
-        return c/n;
-    }else if(co == '1'){
-        return Math.pow(c, 2);
-    }else if(co == '2'){
-        let cs = showRes.textContent;
-        return Math.pow(c, cs[cs.length - 1]);
-    }else if(co == '3'){
-        return Math.sqrt(c);
-    }else if(co == '4'){
-        return Math.log10(c).toFixed(3);
+function showResult(c, co, n = 1) {
+    let ans = 0;
+    switch (co) {
+        case '-':
+            ans = c - n;
+            break;
+        case '+':
+            ans = c + n;
+            break;
+        case '*':
+            ans = c * n;
+            break;
+        case '/':
+            ans = c / n;
+            break;
+        case '1':
+            ans = Math.pow(c, 2);
+            break;
+        case '2':
+            let cs = showRes.textContent;
+            ans = Math.pow(c, cs[cs.length - 1]);
+            break;
+        case '3':
+            ans = Math.sqrt(c);
+            break;
+        case '4':
+            ans = Math.log10(c);
+            break;
+        default:
+            return 0;
+            break;
     }
-    else{
-        return 0;
-    }
+    return (ans > Math.floor(ans)) ? ans.toFixed(5) : ans;
 }
