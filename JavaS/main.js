@@ -12,29 +12,41 @@ let log = document.getElementById('log');
 let equal = document.getElementById('equal');
 let minus = document.getElementById('minus');
 let allButtons = document.querySelectorAll('button');
+let dot = document.getElementById('dot');
 
 let cur;
-let curOp;
+let curOp = null;
 let checkEqual = 0;
 let checknPown = 0;
 let checkMinus = 0;
 
 dltBtn.addEventListener('click', () => {
-    if(showRes.innerHTML !== '0' || showRes.innerHTML !== ''){
+    if(showRes.innerHTML !== '0' && showRes.innerHTML !== ''){
         let x = showRes.innerHTML;
         x = x.substring(0,x.length - 1);
         showRes.innerHTML = x;
     }
-})  
+    if(showRes.innerHTML === ''){
+        showRes.innerHTML = '0';
+        return;
+    }
+})
 
 dltAll.addEventListener('click', () => {
     showRes.innerHTML = '0';
+    curOp = null;
+    checknPown = 0;
 })
 
 minus.onclick = function(){
     showRes.innerHTML = '-';
     checkMinus = 1;
 }
+
+showRes.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    showRes.scrollLeft += e.deltaY;
+});
 
 numberBtns.forEach(element => {
     element.addEventListener('click', () => {
@@ -45,7 +57,7 @@ numberBtns.forEach(element => {
             showRes.innerHTML += element.innerHTML;
             checkMinus = 0;
         }
-        else if(showRes.innerHTML[0] == '0' || showRes.innerHTML === 'x' || showRes.innerHTML === '÷' || showRes.innerHTML === '+' || showRes.innerHTML === '−'){
+        else if((showRes.innerHTML[0] == '0' && showRes.innerHTML.length === 1) || showRes.innerHTML === 'x' || showRes.innerHTML === '÷' || showRes.innerHTML === '+' || showRes.innerHTML === '−'){
             showRes.innerHTML = '';
             showRes.innerHTML += element.innerHTML;
         }else if(checknPown){
@@ -60,11 +72,17 @@ numberBtns.forEach(element => {
     })
 });
 
+dot.addEventListener('click', () => {
+    showRes.innerHTML += '.';
+})
+
 operator.forEach((op) => {
     op.addEventListener('click', () => {
         cur = showRes.innerHTML;
         showRes.innerHTML = op.innerHTML;
         curOp = changeOP(op.innerHTML);
+        checkEqual = 0;
+        checknPown = 0;
     })
 })
 
@@ -131,7 +149,12 @@ porm.addEventListener('click', () => {
 })
 
 equal.addEventListener('click', () => {
+    if(!curOp) return;
+    let isBinary = ['+', '-', '*', '/'].includes(curOp);
+    if(isBinary && (showRes.innerHTML.trim() === '' || isNaN(+showRes.innerHTML))) return;
+    if(curOp === '2' && isNaN(parseInt(showRes.textContent.slice(-1)))) return;
     showRes.innerHTML = showResult(+cur, curOp, +showRes.innerHTML);
+    curOp = null;
     checkEqual = 1;
     checknPown = 0;
 })
@@ -166,7 +189,6 @@ function showResult(c, co, n = 1) {
             break;
         default:
             return 0;
-            break;
     }
-    return (ans > Math.floor(ans)) ? ans.toFixed(5) : ans;
+    return parseFloat(Number(ans).toFixed(5));
 }

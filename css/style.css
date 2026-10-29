@@ -12,6 +12,7 @@ body{
     align-items: center;
     background-color: rgb(186, 186, 186);
     padding: 20px;
+    user-select: none;
 }
 
 .container{
@@ -26,17 +27,26 @@ body{
 }
 
 .show-res{
-    margin: 40px auto;
+    margin: 40px auto -20px;
     width: 90%;
     height: 130px;
     color: white;
-    padding: 40px;
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: -20px;
+    padding: 0 20px;
+    display: block;
+    line-height: 130px;
+    text-align: right;
+    white-space: nowrap;
     font-size: 60px;
-    overflow: hidden;
-    margin-right: -10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+    user-select: text;
+}
+
+.show-res::-webkit-scrollbar {
+    display: none;
 }
 
 .row{
@@ -61,7 +71,9 @@ button:focus{
     outline: none;
 }
 
-.operator{
+.operator,
+.other-operators button,
+#equal{
     background-color: rgb(208, 137, 6);
 }
 .other-operators button:hover,
@@ -75,21 +87,12 @@ button:focus{
     transition: 0.5s;
 }
 
-.other-operators button{
-    background-color: rgb(208, 137, 6);
-}
-
-#equal{
-    background-color: rgb(208, 137, 6);
-}
-
-#minus{
-    background-color: rgb(54, 53, 53);
-}
-
+#dot,
+#minus,
 .number{
     background-color: rgb(54, 53, 53);
 }
+#dot:hover,
 .number:hover,
 #minus:hover{
     background-color: rgb(29, 29, 29);
